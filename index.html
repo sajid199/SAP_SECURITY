@@ -457,6 +457,7 @@
 
             currentQuestions = questionsData[section][level];
             document.getElementById('mainView').style.display = 'none';
+            document.getElementById('questionsView').style.display = 'block'; // <-- Add this line
             document.getElementById('questionsView').classList.add('active');
             
             const questionsContent = document.getElementById('questionsContent');
