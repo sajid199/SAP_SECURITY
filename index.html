@@ -439,7 +439,14 @@
                         {
                             "q": "✅ 10. What is the difference between single role and composite role?",
                             "a": "Single Role:\nA single role contains a set of transactions and authorizations that are needed for a specific job task.\n👉 Example: Role for HR Manager includes HR transactions only.\n\nComposite Role:\nA composite role is a group of multiple single roles bundled together.\n👉 Example: A composite role “Finance Manager” may include Single Role for General Ledger, Single Role for Cost Center Accounting, and Single Role for Vendor Management.\n\n👉 Composite roles help manage large numbers of roles easily.\n👉 Instead of assigning many single roles one by one, we assign a single composite role.\n\nSimple Analogy:\nSingle Role = One toolbox\nComposite Role = A box containing several toolboxes."
+                        },
+                        {
+                            "q": "✅ 11. Explain the link between SU23, SU24, USOBT_C, and USOBX_C in SAP Security in a simple way.",
+                            "a": "✅ Simple Explanation of the Link\n\n✅ SU24 – Maintain Authorization Defaults\nIn SU24, we define which authorization objects should be proposed for a transaction (T-code) and what default values can be suggested.\nThe configuration in SU24 is saved in the tables:\n- USOBT_C → Stores the list of authorization objects proposed for the transaction.\n- USOBX_C → Stores default values for fields in those authorization objects.\n\n✅ USOBT_C / USOBX_C Tables\nUSOBT_C = List of authorization objects proposed per T-code (from SU24).\nUSOBX_C = Default field values proposed for those objects (from SU24).\nThese tables act as the backend data storage of SU24 proposals.\n\n✅ SU23 – Display Authorization Objects\nSU23 is used to view what authorization objects are proposed for a transaction.\nIt shows the current list of objects stored in USOBT_C (and optionally their default values from USOBX_C).\nImportant: SU23 does NOT allow modification, only display.\n\n✅ Super Simple Analogy\nThink of it like making a recipe:\n- SU24 → The chef defines the ingredients (authorization objects) and suggested amounts (default field values).\n- USOBT_C / USOBX_C → The recipe book stores the list of ingredients and amounts.\n- SU23 → You look up the recipe book to check what ingredients are needed, but you cannot change it here.\n\n✅ One-Liner You Can Say in an Interview\n\"SU24 is where we configure the authorization objects and default values for a transaction, which are stored in USOBT_C and USOBX_C tables. SU23 simply displays these objects and values to check what is proposed by the system.\""
                         }
+
+
+
                     ]
 
                 ],
