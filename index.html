@@ -329,6 +329,24 @@
                             Level</button>
                     </div>
                 </div>
+
+                <div class="section-card">
+                    <h2 class="section-title">Additional</h2>
+                    <div class="level-buttons">
+                        <button class="level-btn" onclick="showQuestions('additional', 'basic')">Basic Level</button>
+                        <button class="level-btn advanced" onclick="showQuestions('additional', 'advanced')">Advanced
+                            Level</button>
+                    </div>
+                </div>
+
+                <div class="section-card">
+                    <h2 class="section-title">Miscellaneous</h2>
+                    <div class="level-buttons">
+                        <button class="level-btn" onclick="showQuestions('miscellaneous', 'basic')">Basic Level</button>
+                        <button class="level-btn advanced" onclick="showQuestions('miscellaneous', 'advanced')">Advanced
+                            Level</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -481,6 +499,38 @@
                         a: "Advanced analytics implementation includes: 1) Custom report development using GRC reporting tools, 2) Integration with SAP BusinessObjects for advanced reporting, 3) Real-time dashboard creation, 4) Predictive analytics for risk forecasting, 5) Data mining for pattern recognition, 6) Integration with external analytics tools, and 7) Automated alert and notification systems."
                     }
                 ]
+            },
+            additional: {
+                basic: [
+                    {
+                        q: "What is SAP NetWeaver?",
+                        a: "SAP NetWeaver is an integrated technology platform that can support various SAP applications such as ERP, CRM, and others. It provides the foundation for SAP applications and enables integration with other systems."
+                    }
+                    // Add more questions as needed
+                ],
+                advanced: [
+                    {
+                        q: "Explain SAP Security Audit Log.",
+                        a: "The SAP Security Audit Log is a tool for monitoring security-related events in SAP systems. It helps track unauthorized access attempts, changes to user master records, and other critical activities."
+                    }
+                    // Add more questions as needed
+                ]
+            },
+            miscellaneous: {
+                basic: [
+                    {
+                        q: "What is the use of transaction SUIM?",
+                        a: "SUIM is the User Information System in SAP. It is used for reporting and analyzing user authorizations, roles, and profiles."
+                    }
+                    // Add more questions as needed
+                ],
+                advanced: [
+                    {
+                        q: "How do you handle SAP security in a multi-system landscape?",
+                        a: "In a multi-system landscape, you should implement Central User Administration (CUA), synchronize roles and authorizations, and ensure consistent security policies across all systems."
+                    }
+                    // Add more questions as needed
+                ]
             }
         };
 
@@ -490,7 +540,9 @@
             const sectionNames = {
                 ecc: 'ECC Security',
                 hana: 'SAP S/4 HANA & Fiori Security',
-                grc: 'GRC Security'
+                grc: 'GRC Security',
+                additional: 'Additional',
+                miscellaneous: 'Miscellaneous'
             };
 
             let qArr = questionsData[section][level];
