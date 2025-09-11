@@ -332,47 +332,50 @@
         const questionsData = {
             ecc: {
                 basic: [
+                           [
     {
-        q: "✅ 1. What is SAP Security and why is it important?",
-        a: "SAP Security is a set of rules and controls in the SAP system that protect sensitive business data and processes from unauthorized access. It ensures that only authorized users can access specific applications, data, and functions in SAP.\n👉 It is important because SAP contains critical data like financial information, HR details, and business operations. Without proper security, unauthorized people could misuse this data, leading to data leaks, fraud, or system problems.\n👉 In simple terms, SAP Security is like the lock on your house – only people with the correct key (authorization) can enter and do the right things."
+        "q": "✅ 1. What is SAP Security and why is it important?",
+        "a": "SAP Security is a set of rules and controls in the SAP system that protect sensitive business data and processes from unauthorized access. It ensures that only authorized users can access specific applications, data, and functions in SAP.\n👉 It is important because SAP contains critical data like financial information, HR details, and business operations. Without proper security, unauthorized people could misuse this data, leading to data leaks, fraud, or system problems.\n👉 In simple terms, SAP Security is like the lock on your house – only people with the correct key (authorization) can enter and do the right things."
     },
     {
-        q: "Explain the difference between a role and a profile in SAP.",
-        a: "A Role is a collection of activities a user needs for their job, while a Profile is a technical object containing specific authorizations. Roles are created using PFCG, which automatically generates profiles. Roles simplify permission management, grouping authorizations for job functions, whereas profiles list the exact permissions."
+        "q": "✅ 2. Explain the difference between a role and a profile in SAP.",
+        "a": "A Role is a container or group of activities that a user needs to perform their job.\n\nA Profile is a technical object in SAP that contains the actual authorizations or permissions (like a detailed list of allowed activities).\n\n👉 In earlier SAP versions, we used to create profiles manually, but now we mostly create roles using transaction PFCG.\n👉 The role makes it easier for us to manage permissions because it groups many authorizations together.\n👉 For example, if a person is an HR manager, we create an HR Role that includes all the tasks they need.\n👉 SAP automatically generates the profile when we create a role.\n\nSimple Analogy:\nRole = Job description\nProfile = Detailed list of exact tasks allowed for that job"
     },
     {
-        q: "What are authorization objects in SAP?",
-        a: "Authorization Objects are rules controlling access to SAP functions. They consist of fields like Activity (e.g., Create, Display), Company Code, or Document Type. The system checks these objects to verify if a user has permission to perform specific actions."
+        "q": "✅ 3. What are authorization objects in SAP?",
+        "a": "An Authorization Object is like a rule that controls access to certain functions in SAP.\n👉 It consists of fields that represent specific activities, for example:\n\nActivity (Create, Display, Delete)\nCompany Code\nDocument Type\n\n👉 When a user tries to do something in SAP, the system checks if the user has the correct authorization object with the required values.\n👉 Example:\nAn authorization object may control the ability to create a sales order only for a specific company code.\n\n👉 In simple terms, think of an authorization object as a “permission slip” that says what a user is allowed to do in SAP."
     },
     {
-        q: "What is the purpose of SU24 in SAP security?",
-        a: "SU24 manages authorization objects and values required for SAP transactions. It stores which authorizations are needed for each transaction, automatically proposing them when creating roles in PFCG. This reduces manual effort and ensures accurate role setup."
+        "q": "✅ 4. What is the purpose of SU24 in SAP security?",
+        "a": "👉 SU24 helps us manage which authorization objects and values are required for a transaction in SAP.\n👉 Every time a transaction (like VA01 – Create Sales Order) is used, SAP needs to know what authorizations are required to run it.\n👉 SU24 stores this information so that when we generate roles in PFCG, the required authorization objects are automatically proposed.\n\n👉 It helps the security team by reducing manual work.\n👉 Instead of remembering which authorizations are needed, SU24 tells the system what to include when a role is created.\n\nSimple Analogy:\nSU24 is like a checklist of permissions required to perform each SAP task."
     },
     {
-        q: "Explain the concept of authorization trace (ST01) and SU53.",
-        a: "ST01 (System Trace) records all authorization checks during a user’s activity, helping identify required permissions. SU53 displays the last failed authorization check when a user encounters an error, showing the specific missing permission."
+        "q": "✅ 5. Explain the concept of authorization trace (ST01) and SU53.",
+        "a": "ST01 (System Trace):\nIt records every authorization check SAP performs during a user’s activity.\n👉 We activate ST01 when we want to see exactly which authorizations are checked when a user performs a transaction.\n\nSU53 (Last Authorization Check):\nIf a user gets an “Authorization error” message, they can run SU53.\n👉 It shows the last failed authorization check.\n👉 This helps us understand which specific authorization is missing.\n\nSimple Analogy:\nST01 = A full camera recording of what SAP checks during a process.\nSU53 = A snapshot that shows the last “permission denied” issue."
     },
     {
-        q: "How do you perform role-based access control (RBAC) in SAP?",
-        a: "RBAC in SAP involves assigning roles based on job functions. Using PFCG, create roles with required transactions and authorizations, then assign them to users via SU01. This ensures users only access what’s necessary, minimizing security risks."
+        "q": "✅ 6. How do you perform role-based access control (RBAC) in SAP?",
+        "a": "👉 In SAP, RBAC means assigning roles to users based on their job function.\n👉 First, we analyze the job role – for example, a finance user needs access to financial transactions.\n👉 Then, we create an SAP Role in PFCG containing the required transactions and authorizations.\n👉 Finally, we assign that role to the user via SU01.\n\n👉 This way, each user only gets the authorizations needed for their job, reducing security risks.\n👉 We also regularly review and update roles to match business needs.\n\nSimple Analogy:\nGiving a person a key that only opens the doors they need, not all the doors in the building."
     },
     {
-        q: "What are the key components of an authorization object?",
-        a: "An authorization object includes an Object Name (e.g., S_TCODE) and Fields (e.g., Activity, Company Code, Document Type). These fields define specific permissions, and a user must match the required values to perform actions."
+        "q": "✅ 7. What are the key components of an authorization object?",
+        "a": "An authorization object has two main parts:\n\nObject Name – The identifier of the object, e.g., S_TCODE (authorization to execute a transaction).\nFields – The individual permission fields, for example:\nActivity (Create, Display, Delete)\nCompany Code\nDocument Type\n\n👉 A user must have authorizations that match the correct values in these fields to perform the action.\n👉 Example:\nFor creating a financial document in company code 1000, the authorization object will specify:\nObject: F_BKPF_BUK\nFields: Activity = Create, Company Code = 1000"
     },
     {
-        q: "What is the purpose of transaction PFCG?",
-        a: "PFCG (Profile Generator) is used to create and manage roles in SAP. It allows adding transactions, generating authorization profiles, and assigning roles to users, streamlining the process of defining and managing user permissions."
+        "q": "✅ 8. What is the purpose of transaction PFCG?",
+        "a": "👉 PFCG (Profile Generator) is the central SAP transaction used to create and manage Roles.\n👉 With PFCG, we can:\n\nCreate new roles\nAssign transactions, reports, or web services\nGenerate authorization profiles automatically\nAssign roles to users\n\n👉 PFCG makes the whole process easy and automatic compared to manually creating profiles.\n👉 After entering the required transactions and authorization data, PFCG helps generate the profile and assign it.\n\nSimple Analogy:\nPFCG is like a tool that builds a custom key for a user, based on what they are allowed to do."
     },
     {
-        q: "How do you generate a role in SAP using PFCG?",
-        a: "In PFCG, create a role, add a description, include necessary transactions in the Menu Tab, modify authorization objects in the Authorizations Tab, generate the profile, and assign the role to users in the User Tab. This ensures users have the correct permissions."
+        "q": "✅ 9. How do you generate a role in SAP using PFCG?",
+        "a": "👉 Steps to generate a role in SAP:\n\nGo to transaction PFCG.\nEnter a Role Name and click Create.\nAdd a Role Description (like “Finance Role”).\nIn the Menu Tab, add the required transactions (e.g., VA01 for Sales Order).\nIn the Authorizations Tab, click Change Authorization Data.\nModify the authorization objects as needed (or accept proposed values).\nClick Generate Profile – this creates the authorization profile in the background.\nFinally, in the User Tab, assign the role to the user.\n\n👉 This process ensures the user gets the correct authorizations and transactions."
     },
     {
-        q: "What is the difference between single role and composite role?",
-        a: "A Single Role contains authorizations for specific tasks or transactions. A Composite Role groups multiple single roles together, simplifying the assignment of a complete set of permissions for complex job functions."
+        "q": "✅ 10. What is the difference between single role and composite role?",
+        "a": "Single Role:\nA single role contains a set of transactions and authorizations that are needed for a specific job task.\n👉 Example: Role for HR Manager includes HR transactions only.\n\nComposite Role:\nA composite role is a group of multiple single roles bundled together.\n👉 Example: A composite role “Finance Manager” may include Single Role for General Ledger, Single Role for Cost Center Accounting, and Single Role for Vendor Management.\n\n👉 Composite roles help manage large numbers of roles easily.\n👉 Instead of assigning many single roles one by one, we assign a single composite role.\n\nSimple Analogy:\nSingle Role = One toolbox\nComposite Role = A box containing several toolboxes."
     }
-],
+]
+
+                        ],
                 advanced: [
                     {
                         q: "Explain the concept of Derived Roles and when to use them.",
@@ -479,9 +482,10 @@
                 grc: 'GRC Security'
             };
 
-            currentQuestions = questionsData[section][level];
+            let qArr = questionsData[section][level];
+            currentQuestions = Array.isArray(qArr[0]) ? qArr[0] : qArr;
             document.getElementById('mainView').style.display = 'none';
-            document.getElementById('questionsView').style.display = 'block'; // <-- Add this line
+            document.getElementById('questionsView').style.display = 'block';
             document.getElementById('questionsView').classList.add('active');
             
             const questionsContent = document.getElementById('questionsContent');
