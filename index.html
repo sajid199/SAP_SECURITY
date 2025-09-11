@@ -332,23 +332,47 @@
         const questionsData = {
             ecc: {
                 basic: [
-                    {
-                        q: "What is SAP ECC and why is security important?",
-                        a: "SAP ECC (ERP Central Component) is SAP's enterprise resource planning software. Security is crucial because it handles sensitive business data, financial information, and critical business processes. Proper security ensures data integrity, prevents unauthorized access, and maintains compliance with regulations."
-                    },
-                    {
-                        q: "What are the main components of SAP security?",
-                        a: "The main components include: User Management (creating and maintaining users), Role-Based Access Control (RBAC), Authorization Objects, Profiles, Transport Management, and Audit Logging. These components work together to provide comprehensive security coverage."
-                    },
-                    {
-                        q: "Explain the difference between Single Roles and Composite Roles.",
-                        a: "Single Roles contain specific authorizations for particular tasks or transactions. Composite Roles are containers that group multiple single roles together, making it easier to assign a complete set of permissions to users based on their job functions."
-                    },
-                    {
-                        q: "What is SU01 transaction used for?",
-                        a: "SU01 (User Maintenance) is used to create, modify, and maintain user master records. It allows you to set user details, assign roles, set validity periods, and configure user-specific settings like language and time zone."
-                    }
-                ],
+    {
+        q: "✅ 1. What is SAP Security and why is it important?",
+        a: "SAP Security is a set of rules and controls in the SAP system that protect sensitive business data and processes from unauthorized access. It ensures that only authorized users can access specific applications, data, and functions in SAP.\n👉 It is important because SAP contains critical data like financial information, HR details, and business operations. Without proper security, unauthorized people could misuse this data, leading to data leaks, fraud, or system problems.\n👉 In simple terms, SAP Security is like the lock on your house – only people with the correct key (authorization) can enter and do the right things."
+    },
+    {
+        q: "Explain the difference between a role and a profile in SAP.",
+        a: "A Role is a collection of activities a user needs for their job, while a Profile is a technical object containing specific authorizations. Roles are created using PFCG, which automatically generates profiles. Roles simplify permission management, grouping authorizations for job functions, whereas profiles list the exact permissions."
+    },
+    {
+        q: "What are authorization objects in SAP?",
+        a: "Authorization Objects are rules controlling access to SAP functions. They consist of fields like Activity (e.g., Create, Display), Company Code, or Document Type. The system checks these objects to verify if a user has permission to perform specific actions."
+    },
+    {
+        q: "What is the purpose of SU24 in SAP security?",
+        a: "SU24 manages authorization objects and values required for SAP transactions. It stores which authorizations are needed for each transaction, automatically proposing them when creating roles in PFCG. This reduces manual effort and ensures accurate role setup."
+    },
+    {
+        q: "Explain the concept of authorization trace (ST01) and SU53.",
+        a: "ST01 (System Trace) records all authorization checks during a user’s activity, helping identify required permissions. SU53 displays the last failed authorization check when a user encounters an error, showing the specific missing permission."
+    },
+    {
+        q: "How do you perform role-based access control (RBAC) in SAP?",
+        a: "RBAC in SAP involves assigning roles based on job functions. Using PFCG, create roles with required transactions and authorizations, then assign them to users via SU01. This ensures users only access what’s necessary, minimizing security risks."
+    },
+    {
+        q: "What are the key components of an authorization object?",
+        a: "An authorization object includes an Object Name (e.g., S_TCODE) and Fields (e.g., Activity, Company Code, Document Type). These fields define specific permissions, and a user must match the required values to perform actions."
+    },
+    {
+        q: "What is the purpose of transaction PFCG?",
+        a: "PFCG (Profile Generator) is used to create and manage roles in SAP. It allows adding transactions, generating authorization profiles, and assigning roles to users, streamlining the process of defining and managing user permissions."
+    },
+    {
+        q: "How do you generate a role in SAP using PFCG?",
+        a: "In PFCG, create a role, add a description, include necessary transactions in the Menu Tab, modify authorization objects in the Authorizations Tab, generate the profile, and assign the role to users in the User Tab. This ensures users have the correct permissions."
+    },
+    {
+        q: "What is the difference between single role and composite role?",
+        a: "A Single Role contains authorizations for specific tasks or transactions. A Composite Role groups multiple single roles together, simplifying the assignment of a complete set of permissions for complex job functions."
+    }
+],
                 advanced: [
                     {
                         q: "Explain the concept of Derived Roles and when to use them.",
@@ -469,7 +493,7 @@
                     <div class="question-item" data-index="${index}">
                         <div class="question">${item.q}</div>
                         <button class="toggle-answer" onclick="toggleAnswer(${index})">Show Answer</button>
-                        <div class="answer" id="answer-${index}">${item.a}</div>
+                        <div class="answer" id="answer-${index}">${item.a.replace(/\n/g, '<br>')}</div>
                     </div>
                 `).join('')}
             `;
