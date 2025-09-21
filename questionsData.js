@@ -65,6 +65,32 @@ const questionsData = {
                     "a": "👉 First, check which fields are unmaintained:\n- If Yellow, maintain missing fields like Activity or Authorization Group.\n- If Red, assign correct organizational values like Company Code or Plant.\n👉 Then regenerate the role and test again.\n✅ This ensures the user gets complete and correct access."
                 },
 
+                {
+                    "q": "✅ 1. Under what conditions can you delete an authorization object from a role?",
+                    "a": "👉 Two conditions must be satisfied before deleting an authorization object from a role:\n1️⃣ The authorization object must be deactivated.\n2️⃣ The object status should be either 'Manually' or 'Changed'.\n✅ You cannot delete SAP standard objects directly because they are tied to SU24 defaults."
+                },
+                {
+                    "q": "✅ 2. Why do we need to deactivate an authorization object before deleting it?",
+                    "a": "👉 Deactivation ensures that the authorization object is not currently active in the role.\n👉 SAP does this to prevent accidental deletion of important objects that might be required for the transaction.\n✅ Only after deactivation can the system allow you to remove it safely."
+                },
+                {
+                    "q": "✅ 3. Can you delete an authorization object with 'Standard' status?",
+                    "a": "👉 No ❌, you cannot directly delete an authorization object with 'Standard' status because it comes from SU24 defaults.\n👉 If you want to remove it permanently, you must first adjust SU24 proposals for that T-code.\n👉 In PFCG role level, only 'Manually' or 'Changed' objects can be deleted."
+                },
+                {
+                    "q": "✅ 4. What are the two ways of Profile Generation in PFCG?",
+                    "a": "👉 Profile generation can be done in two ways:\n1️⃣ Manual Mode – Change Authorization Data manually, maintain fields, then generate profile.\n2️⃣ Expert Mode – Provides more control; allows comparison with SU24 defaults, reset, and adjust authorizations.\n✅ Expert Mode is used when you want detailed adjustments and consistency with SU24."
+                },
+                {
+                    "q": "✅ 5. When would you use Expert Mode in profile generation?",
+                    "a": "👉 Expert Mode is used when:\n- You want to reset authorization data back to SU24 proposals.\n- You want to adjust only organizational fields without disturbing other values.\n- You want to compare and repair inconsistencies between menu transactions and authorization objects.\n✅ It gives more flexibility than normal manual maintenance."
+                },
+                {
+                    "q": "✅ 6. What is the impact of Profile Generation in SAP?",
+                    "a": "👉 Profile generation creates the actual authorization profile that is assigned to the user.\n👉 Without profile generation, even if the role has objects and values, users will not get access.\n✅ It is the final step that converts maintained authorizations into executable security for end users."
+                },
+
+
 
 
                 {
