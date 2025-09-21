@@ -36,6 +36,35 @@ const questionsData = {
                     "q": "✅ 7. During troubleshooting, how can you use these statuses?",
                     "a": "👉 The status helps identify whether an object is standard, modified, or manually added.\n✅ Example: If a user complains about missing authorization and you see the object in 'Manually' status, it means it was added outside SU24 and may need adjustment.\n👉 If it’s 'Changed', check if the modified values are correct.\n👉 This saves time in finding the root cause of authorization issues."
                 },
+                {
+                    "q": "✅ 1. What do the Traffic Light colors in SAP PFCG indicate?",
+                    "a": "👉 In PFCG, traffic lights indicate the status of authorization fields:\n✅ Green – All authorization fields are properly maintained with values.\n⚠️ Yellow – At least one authorization field is not maintained.\n❌ Red – Organizational level fields are not maintained.\n👉 This helps consultants quickly identify whether roles are fully maintained or need corrections."
+                },
+                {
+                    "q": "✅ 2. What does a Green light mean in PFCG?",
+                    "a": "👉 Green light means all authorization fields in that object are fully maintained with values.\n✅ Example: If S_TCODE and S_USER_GRP both have values assigned, the light shows Green.\n👉 This indicates the role is ready from an authorization perspective."
+                },
+                {
+                    "q": "✅ 3. What does a Yellow light mean in PFCG?",
+                    "a": "👉 Yellow means at least one field in the authorization object is blank or not maintained.\n✅ Example: If an object requires Activity and Authorization Group, and you only fill Activity but leave Authorization Group blank, the traffic light becomes Yellow.\n👉 Yellow indicates incomplete maintenance, and the user might face authorization errors."
+                },
+                {
+                    "q": "✅ 4. What does a Red light mean in PFCG?",
+                    "a": "👉 Red light means organizational level fields (like Company Code, Plant, Purchasing Org) are not maintained.\n✅ Example: If the object requires Company Code (BUKRS) but it is left blank, the light turns Red.\n👉 This is critical because unmaintained organizational levels can block role generation."
+                },
+                {
+                    "q": "✅ 5. Why are organizational fields so important in roles?",
+                    "a": "👉 Organizational fields restrict access based on business structures like Company Code, Plant, Sales Org, etc.\n👉 Example: A user in Finance India should only see Company Code 1000, not all company codes. This is controlled by maintaining organizational fields.\n👉 If not maintained (Red), users may either face authorization issues or accidentally get too broad access."
+                },
+                {
+                    "q": "✅ 6. What are the two types of Authorization Fields in SAP?",
+                    "a": "👉 Authorization fields can be of two types:\n1️⃣ Normal fields – Example: Activity (ACTVT), Role name (AGR_NAME).\n2️⃣ Organizational fields – Example: Company Code (BUKRS), Plant (WERKS), Sales Org (VKORG).\n👉 Normal fields define the action type, while organizational fields define the business area where the action is allowed."
+                },
+                {
+                    "q": "✅ 7. During role testing, if you see many Yellow and Red lights, what would you do?",
+                    "a": "👉 First, check which fields are unmaintained:\n- If Yellow, maintain missing fields like Activity or Authorization Group.\n- If Red, assign correct organizational values like Company Code or Plant.\n👉 Then regenerate the role and test again.\n✅ This ensures the user gets complete and correct access."
+                },
+
 
 
                 {
