@@ -7,6 +7,27 @@ const questionsData = {
                     "q": "✅ 1. What is SAP Security and why is it important?",
                     "a": "SAP Security is a set of rules and controls in the SAP system that protect sensitive business data and processes from unauthorized access. It ensures that only authorized users can access specific applications, data, and functions in SAP.\n👉 It is important because SAP contains critical data like financial information, HR details, and business operations. Without proper security, unauthorized people could misuse this data, leading to data leaks, fraud, or system problems.\n👉 In simple terms, SAP Security is like the lock on your house – only people with the correct key (authorization) can enter and do the right things."
                 },
+                {
+                    "q": "✅ 1. What is the difference between Normal Field and Org Field in SAP Security?",
+                    "a": "👉 Normal Field does not represent organization, example: Activity (01=Create, 03=Display).\n👉 Org Field represents organization units like Company Code, Plant, Sales Org."
+                },
+                {
+                    "q": "✅ 2. How are Normal Fields maintained?",
+                    "a": "👉 Normal Fields are maintained locally inside the role.\n👉 Their values are the same everywhere (universal meaning)."
+                },
+                {
+                    "q": "✅ 3. How are Org Fields maintained?",
+                    "a": "👉 Org Fields are maintained centrally in the Organization Levels tab in PFCG.\n👉 Their values change from one organization to another (e.g., Company Code 1000 vs 2000)."
+                },
+                {
+                    "q": "✅ 4. Can you give examples of Normal Field and Org Field?",
+                    "a": "👉 Normal Field Example: Activity (01=Create, 02=Change, 03=Display).\n👉 Org Field Example: Company Code, Plant, Sales Organization."
+                },
+                {
+                    "q": "✅ 5. What happens if Org Field is not maintained in a role?",
+                    "a": "👉 If left blank or '*', the user may get access to all organizations (too much access).\n👉 If not maintained properly, the user may lose access to required data."
+                },
+
 
                 {
                     "q": "✅ 1. What are the different statuses of Authorization Objects in SAP PFCG?",
