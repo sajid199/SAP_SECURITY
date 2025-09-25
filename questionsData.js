@@ -4,9 +4,37 @@ const questionsData = {
         basic: [
             [
                 {
-                    "q": "✅ 1. What is SAP Security and why is it important?",
+                    "q": "✅  What is SAP Security and why is it important?",
                     "a": "SAP Security is a set of rules and controls in the SAP system that protect sensitive business data and processes from unauthorized access. It ensures that only authorized users can access specific applications, data, and functions in SAP.\n👉 It is important because SAP contains critical data like financial information, HR details, and business operations. Without proper security, unauthorized people could misuse this data, leading to data leaks, fraud, or system problems.\n👉 In simple terms, SAP Security is like the lock on your house – only people with the correct key (authorization) can enter and do the right things."
                 },
+
+                {
+                    "q": "✅ 1. In a Derived Role, can we directly add transactions in the Menu tab?",
+                    "a": "👉 No, in a Derived Role we cannot add or delete transactions in the Menu tab.\n👉 Transactions must be added in the Master Role, and they will automatically appear in the Derived Role."
+                },
+                {
+                    "q": "✅ 2. How can we add a transaction to a Derived Role?",
+                    "a": "👉 Step 1 – Go to the Master Role and add the transaction in the Menu tab.\n👉 Step 2 – Save and generate the Master Role.\n👉 Step 3 – Go to the Derived Role and update/adjust authorization data, then generate."
+                },
+                {
+                    "q": "✅ 3. What is the difference between Master Role and Derived Role?",
+                    "a": "👉 Master Role: Created normally, where we define Menu, Transactions, and Authorizations.\n👉 Derived Role: Inherits Menu and Transactions from Master Role, but organizational fields (like Company Code, Plant) can be maintained separately."
+                },
+                {
+                    "q": "✅ 4. What part of a role can be changed in a Derived Role?",
+                    "a": "👉 We can only change Organizational Level fields in a Derived Role.\n👉 Menu structure and non-org authorizations come from the Master Role."
+                },
+                {
+                    "q": "✅ 5. How do we check which Master Role is linked to a Derived Role?",
+                    "a": "👉 Go to PFCG → Open the Derived Role.\n👉 In the Role Maintenance screen, check the field 'Derived from Role'.\n👉 That field shows the Master Role name."
+                },
+
+
+                {
+                    "q": "✅ How to find the Master role from which a role is derived?",
+                    "a": "👉 Go to transaction PFCG and open the role.\n👉 On the Role → Description screen, check the field called 'Derived from Role'.\n✅ If the role is a derived role, this field will show the name of the Master role.\n❌ If the field is empty, then the role is not derived from any Master role."
+                },
+
                 {
                     "q": "✅ 1. What is the difference between Normal Field and Org Field in SAP Security?",
                     "a": "👉 Normal Field does not represent organization, example: Activity (01=Create, 03=Display).\n👉 Org Field represents organization units like Company Code, Plant, Sales Org."
@@ -27,6 +55,40 @@ const questionsData = {
                     "q": "✅ 5. What happens if Org Field is not maintained in a role?",
                     "a": "👉 If left blank or '*', the user may get access to all organizations (too much access).\n👉 If not maintained properly, the user may lose access to required data."
                 },
+                {
+                    "q": "✅ 1. What happens if you choose 'Delete and recreate profile and authorizations' in PFCG?",
+                    "a": "👉 Old data is deleted.\n👉 Customizations are lost.\n👉 System creates fresh authorization data."
+                },
+                {
+                    "q": "✅ What is the difference between Manual Mode and Expert Mode (3rd Option) in PFCG?",
+                    "a": "✅ Simple Explanation of Manual Mode vs Expert Mode (3rd Option)\n\nWhen creating or maintaining roles in PFCG, you need to maintain authorizations. SAP provides different options for this.\n\n✅ Manual Mode\n- Add authorization objects yourself (no proposals from SAP).\n- You must know exactly which objects are required.\n- Useful for adding custom objects (Z-objects) or very specific adjustments.\n- Drawback: High risk of missing necessary objects.\n\n✅ Expert Mode (3rd Option)\n- Option name: 'Manually maintain authorization data and merge with existing data'.\n- Keeps SAP-generated proposals from menu transactions.\n- Allows you to add manual objects on top.\n- Merges both system-proposed and manual entries without overwriting.\n- Useful when modifying an existing role and you don’t want to lose proposals.\n\n✅ Comparison Table\n| Feature | Manual Mode | Expert Mode (3rd Option) |\n|---------|-------------|---------------------------|\n| How objects are added | Only manual | Proposals + Manual merge |\n| Proposals from menu | ❌ Not used | ✅ Used and merged |\n| Risk of missing objects | High | Lower |\n| Use case | Custom objects only | Enhance existing roles safely |\n\n✅ One-Liner You Can Say in an Interview\n\"Manual Mode in PFCG only lets me add objects manually without proposals, whereas Expert Mode 3rd Option merges system-proposed objects with manual entries, keeping existing data intact.\""
+                },
+
+                {
+                    "q": "✅ 2. What happens if you choose 'Edit old status' in PFCG?",
+                    "a": "👉 You can directly change the authorization data.\n👉 Role menu is not touched.\n👉 Useful when only small changes are needed."
+                },
+                {
+                    "q": "✅ 3. What happens if you choose 'Read old status and merge with new data' in PFCG?",
+                    "a": "👉 Old authorization data is kept.\n👉 New data (like new t-code added in menu) is merged.\n👉 Best option when you want to keep old changes but also update with new ones."
+                },
+                {
+                    "q": "✅ 4. If a new T-code is added to the role menu, which option should you select?",
+                    "a": "👉 Select 'Read old status and merge with new data'.\n👉 This keeps old authorization data and merges the new T-code."
+                },
+                {
+                    "q": "✅ 5. If you want to completely reset the role and start fresh, which option should you select?",
+                    "a": "👉 Select 'Delete and recreate profile and authorizations'.\n👉 Old data and customizations will be lost."
+                },
+                {
+                    "q": "✅ 6. If you only need to adjust some authorization fields without touching the role menu, which option should you select?",
+                    "a": "👉 Select 'Edit old status'.\n👉 This allows you to directly edit the existing authorizations."
+                },
+                {
+                    "q": "✅ 7. If you accidentally deleted a T-code from the menu and re-added it, which option helps to merge it back without losing old data?",
+                    "a": "👉 Select 'Read old status and merge with new data'.\n👉 It will merge the re-added T-code with old authorizations."
+                },
+
 
 
                 {
