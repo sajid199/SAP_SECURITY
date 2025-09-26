@@ -1,4 +1,3 @@
-if (typeof module !== 'undefined') module.exports = questionsData;
 const questionsData = {
     ecc: {
         basic: [

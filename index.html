@@ -156,6 +156,12 @@
             transform: translateX(10px);
         }
 
+        .question-item.highlight {
+            background: #fff3cd;
+            border-left-color: #ffc107;
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+        }
+
         .question {
             font-weight: 600;
             color: #2c3e50;
@@ -242,6 +248,23 @@
             transform: scale(1.02);
         }
 
+        .search-results-info {
+            text-align: center;
+            margin: 20px 0;
+            padding: 10px;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 10px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .highlight-match {
+            background-color: yellow;
+            padding: 1px 2px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
@@ -298,7 +321,7 @@
         </header>
 
         <div class="search-container">
-            <input type="text" class="search-input" id="searchInput" placeholder="Search questions...">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search questions... (e.g., 'role authorization pfcg')">
         </div>
 
         <div id="mainView">
@@ -359,6 +382,7 @@
 
         <div id="questionsView" class="questions-container">
             <button class="back-btn" onclick="showMainView()">← Back to Categories</button>
+            <div id="searchResultsInfo" class="search-results-info" style="display: none;"></div>
             <div id="questionsContent"></div>
         </div>
 
@@ -387,7 +411,6 @@
                             SUIM - User Information System
                         </a>
                     </li>
-                    <!-- Add more screenshots as needed -->
                 </ul>
                 <p style="text-align:center; color:#888;">You can reference these screenshots in any answer using their links.</p>
             </div>
@@ -396,9 +419,10 @@
 
     <script src="questionsData.js"></script>
     <script>
-        // Question data structure - Easy to maintain and add new questions
-        
+        // Questions data is now loaded from external questionsData.js file
+
         let currentQuestions = [];
+        let originalQuestions = [];
 
         function showQuestions(section, level) {
             const sectionNames = {
@@ -411,14 +435,20 @@
 
             let qArr = questionsData[section][level];
             currentQuestions = Array.isArray(qArr[0]) ? qArr[0] : qArr;
+            originalQuestions = [...currentQuestions]; // Keep original copy
+            
             document.getElementById('mainView').style.display = 'none';
             document.getElementById('questionsView').style.display = 'block';
             document.getElementById('questionsView').classList.add('active');
 
+            displayQuestions(sectionNames[section], level);
+        }
+
+        function displayQuestions(sectionName, level) {
             const questionsContent = document.getElementById('questionsContent');
             questionsContent.innerHTML = `
                 <h2 style="color: #2c3e50; margin-bottom: 30px; text-align: center; font-size: 2rem;">
-                    ${sectionNames[section]} - ${level.charAt(0).toUpperCase() + level.slice(1)} Level
+                    ${sectionName} - ${level.charAt(0).toUpperCase() + level.slice(1)} Level
                 </h2>
                 ${currentQuestions.map((item, index) => `
                     <div class="question-item" data-index="${index}">
@@ -431,12 +461,15 @@
         }
 
         function showMainView() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('searchResultsInfo').style.display = 'none';
             document.getElementById('questionsView').classList.remove('active');
             document.getElementById('screensView').classList.remove('active');
+            document.getElementById('mainView').style.display = 'block';
+
             setTimeout(() => {
                 document.getElementById('questionsView').style.display = 'none';
                 document.getElementById('screensView').style.display = 'none';
-                document.getElementById('mainView').style.display = 'block';
             }, 300);
         }
 
@@ -462,32 +495,103 @@
             document.getElementById('screensView').classList.add('active');
         }
 
-        // Search functionality
+        function highlightMatches(text, searchWords) {
+            let highlightedText = text;
+            searchWords.forEach(word => {
+                if (word.length > 0) {
+                    const regex = new RegExp(`(${word})`, 'gi');
+                    highlightedText = highlightedText.replace(regex, '<span class="highlight-match">$1</span>');
+                }
+            });
+            return highlightedText;
+        }
+
+        function matchesAnyWord(text, searchWords) {
+            const textLower = text.toLowerCase();
+            return searchWords.some(word => 
+                word.length > 0 && textLower.includes(word.toLowerCase())
+            );
+        }
+
+        // Enhanced search functionality
         document.getElementById('searchInput').addEventListener('input', function (e) {
-            const searchTerm = e.target.value.toLowerCase().trim();
+            const searchTerm = e.target.value.trim();
 
             // Only search when questions are visible
             if (document.getElementById('questionsView').classList.contains('active')) {
-                const questionItems = document.querySelectorAll('.question-item');
+                if (searchTerm === '') {
+                    // Reset to show all questions
+                    currentQuestions = [...originalQuestions];
+                    displayQuestions('Search Results', '');
+                    document.getElementById('searchResultsInfo').style.display = 'none';
+                    return;
+                }
 
-                questionItems.forEach(item => {
-                    const question = item.querySelector('.question').textContent.toLowerCase();
-                    const answer = item.querySelector('.answer').textContent.toLowerCase();
-
-                    if (searchTerm === '' || question.includes(searchTerm) || answer.includes(searchTerm)) {
-                        item.style.display = 'block';
-                        item.style.opacity = '1';
-                    } else {
-                        item.style.display = 'none';
-                        item.style.opacity = '0';
+                // Split search term into individual words
+                const searchWords = searchTerm.split(/\s+/).filter(word => word.length > 0);
+                
+                const matchedQuestions = [];
+                
+                originalQuestions.forEach((item, index) => {
+                    const questionText = item.q;
+                    const answerText = item.a;
+                    
+                    // Check if any search word matches in question or answer
+                    const questionMatches = matchesAnyWord(questionText, searchWords);
+                    const answerMatches = matchesAnyWord(answerText, searchWords);
+                    
+                    if (questionMatches || answerMatches) {
+                        // Create highlighted version
+                        const highlightedQuestion = highlightMatches(questionText, searchWords);
+                        const highlightedAnswer = highlightMatches(answerText, searchWords);
+                        
+                        matchedQuestions.push({
+                            q: highlightedQuestion,
+                            a: highlightedAnswer,
+                            originalIndex: index
+                        });
                     }
                 });
+
+                // Update current questions and display
+                currentQuestions = matchedQuestions;
+                
+                // Update the display
+                const questionsContent = document.getElementById('questionsContent');
+                const searchResultsInfo = document.getElementById('searchResultsInfo');
+                
+                if (matchedQuestions.length === 0) {
+                    questionsContent.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: #666;">
+                            <h3>No questions found matching "${searchTerm}"</h3>
+                            <p>Try different keywords or check spelling</p>
+                        </div>
+                    `;
+                    searchResultsInfo.style.display = 'none';
+                } else {
+                    searchResultsInfo.innerHTML = `Found ${matchedQuestions.length} question(s) matching "${searchTerm}"`;
+                    searchResultsInfo.style.display = 'block';
+                    
+                    questionsContent.innerHTML = `
+                        <h2 style="color: #2c3e50; margin-bottom: 30px; text-align: center; font-size: 2rem;">
+                            Search Results
+                        </h2>
+                        ${matchedQuestions.map((item, index) => `
+                            <div class="question-item highlight" data-index="${index}">
+                                <div class="question">${item.q}</div>
+                                <button class="toggle-answer" onclick="toggleAnswer(${index})">Show Answer</button>
+                                <div class="answer" id="answer-${index}">${item.a.replace(/\n/g, '<br>')}</div>
+                            </div>
+                        `).join('')}
+                    `;
+                }
             }
         });
 
         // Reset search when returning to main view
         function showMainView() {
             document.getElementById('searchInput').value = '';
+            document.getElementById('searchResultsInfo').style.display = 'none';
             document.getElementById('questionsView').classList.remove('active');
             document.getElementById('screensView').classList.remove('active');
             document.getElementById('mainView').style.display = 'block';
