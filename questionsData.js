@@ -9,6 +9,114 @@ const questionsData = {
                 },
 
                 {
+                    "q": "✅ What are the Return Codes (RC) in ST01 System Trace in SAP Security?",
+                    "a": "👉 ST01 System Trace helps in analyzing authorization checks. The Return Codes (RC) explain the result of the authorization check.\n\n✅ Common Return Codes:\n- RC = 0 → Authorization is successful.\n- RC = 4 → User has the required Authorization Object, but the field values do not match.\n- RC = 8 → User does not have the required Authorization Values in their User Buffer.\n- RC = 12 → User does not have the required Authorization Object at all.\n\n👉 In short:\n- RC 0 = Success ✅\n- RC 4 = Wrong Field Value ⚠️\n- RC 8 = Missing Authorization Value ❌\n- RC 12 = Missing Authorization Object ❌"
+                },
+                {
+                    "q": "✅ What is the difference between ST01 and SU53 in SAP Security?",
+                    "a": "👉 Both ST01 and SU53 are used for authorization analysis, but they work in different ways.\n\n✅ SU53:\n- Shows the last failed authorization check for the user.\n- It only displays the *most recent* failure.\n- Easy to use but limited (cannot see multiple checks).\n\n✅ ST01 (System Trace):\n- Records all authorization checks performed during a trace session.\n- Can capture successful and failed checks.\n- Provides detailed Return Codes (RC = 0,4,8,12).\n- More powerful for troubleshooting than SU53.\n\n👉 In short:\n- **SU53** = Quick check for last failed authorization (simple, user level).\n- **ST01** = Detailed trace of all authorization checks (powerful, admin level)."
+                },
+                {
+                    "q": "✅ Scenario 1: A user says they are not able to access a transaction even though the role is assigned. How will you troubleshoot?",
+                    "a": "👉 Step 1: Check in SU53 – to see the last failed authorization.\n👉 Step 2: If not clear, run ST01 trace – to see detailed authorization checks.\n👉 Step 3: Verify if the role assigned has the correct authorization object and field values.\n👉 Step 4: Check if the profile is generated and user master record (SU01) is updated.\n👉 Step 5: If still issue, verify if role is transported properly to QA/PRD."
+                },
+                {
+                    "q": "✅ Scenario 2: A user can run a transaction in DEV but not in QA. What could be the reason?",
+                    "a": "👉 Roles are transported via TR, but user assignments are usually not transported.\n👉 Check if the role is available in QA.\n👉 Check if the user is created in QA (SU01).\n👉 Manually assign the role to the user in QA.\n👉 Ensure the role is generated properly in QA (profile generated)."
+                },
+                {
+                    "q": "✅ Scenario 3: User complains they can access a transaction but still cannot perform a specific activity inside it. What will you check?",
+                    "a": "👉 Check authorization objects linked to that transaction.\n👉 Many transactions require multiple objects (e.g., Activity values like 01=Create, 03=Display).\n👉 Use SU53 or ST01 to confirm which object is missing.\n👉 Update the role with required authorization field values and re-transport."
+                },
+                {
+                    "q": "✅ Scenario 4: How do you find which roles contain a particular authorization object?",
+                    "a": "👉 Go to SUIM (User Information System).\n👉 Navigate: Roles → By Authorization Value.\n👉 Enter the Authorization Object.\n👉 System will list all roles containing that object.\n👉 Useful when troubleshooting missing authorization issues."
+                },
+                {
+                    "q": "✅ Scenario 5: You need to find the Master Role from a Derived Role. How will you do it?",
+                    "a": "👉 Go to PFCG and open the Derived Role.\n👉 In the Role Maintenance screen, check the 'Role' tab.\n👉 The system will show the Master Role from which it was derived.\n👉 Another way: Use table AGR_DEFINE to check relationship between master and derived roles."
+                },
+                {
+                    "q": "✅ While trying to trace the log via ST01, we are seeing '0 Records Read'. What could be the problem and how do you resolve it?",
+                    "a": "👉 When ST01 shows '0 Records Read', it means no trace data was captured. This usually happens due to:\n\n✅ Possible Reasons:\n1. Incorrect input values entered in ST01 (wrong user ID, transaction, etc.).\n2. User is working in a different application server than where you activated ST01.\n\n✅ How to Resolve:\n- Make sure you entered correct input values (User ID, Authorization check, etc.).\n- Check if user and yourself are on the same application server.\n  - Use AL08 → To see users logged in per server.\n  - Use SM51 → To see the list of application servers.\n- Log in to the same application server as the user and then run ST01 trace.\n\n👉 In short: Always confirm both correct input values and same application server before running ST01."
+                },
+                {
+                    "q": "✅ What is the difference between ST01 and STAUTHTRACE in SAP Security?",
+                    "a": "👉 ST01 is the old System Trace, while STAUTHTRACE is the newer tool for tracing authorizations.\n\n✅ ST01:\n- Traces authorization checks, kernel, RFC, database, etc.\n- Works only on the *local* application server.\n- Needs manual filtering and can show 0 records if user is on another server.\n\n✅ STAUTHTRACE:\n- Dedicated to authorization trace only.\n- Works *across all application servers*.\n- More user-friendly and accurate than ST01.\n\n👉 In short: STAUTHTRACE is the advanced replacement of ST01 for authorization traces."
+                },
+                {
+                    "q": "✅ Scenario: You are running ST01 trace but keep getting '0 records'. What should you do?",
+                    "a": "👉 ST01 only works on the local application server.\n👉 If the user is logged in on another server, no records will be captured.\n✅ Solution:\n1. Use SM51 to see list of application servers.\n2. Use AL08 to check which server the user is logged into.\n3. Log in to the same server and run ST01 trace again.\n👉 Alternatively, use STAUTHTRACE which works across all servers and avoids this issue."
+                },
+                {
+                    "q": "✅ When would you use STAUTHTRACE instead of ST01?",
+                    "a": "👉 Use STAUTHTRACE when:\n- You want to trace across *all application servers*.\n- You need a trace only for authorization checks (exclusive).\n- You want a more reliable and user-friendly tool compared to ST01.\n👉 Use ST01 when:\n- You want to trace kernel, RFC, or DB calls along with authorizations.\n- You are troubleshooting older SAP systems without STAUTHTRACE."
+                },
+                {
+                    "q": "✅ Which is better for Authorization Analysis: ST01 or STAUTHTRACE?",
+                    "a": "👉 For authorization checks only, **STAUTHTRACE** is better because:\n- It captures trace across all servers.\n- It avoids the '0 record' issue of ST01.\n- Easier to read results.\n👉 But **ST01** is still useful if you need a full system trace (authorization + RFC + DB + Kernel)."
+                },
+
+                {
+                    "q": "✅ How do you move Users and Roles from DEV to QA in SAP ECC?",
+                    "a": "👉 Roles are transported using Transport Requests.\n\n✅ Steps to Move Roles:\n1. Create or change the role in PFCG (DEV).\n2. Generate the authorization profile.\n3. Save the role to a Transport Request.\n4. Release the TR in SE10/SE09.\n5. Import the TR into QA using STMS.\n\n👉 Users are usually not transported between systems because each system (DEV/QA/PRD) has different user bases.\n\n✅ Options for Users:\n- Best Practice: Create users manually in QA.\n- If needed, assign roles to users manually in QA (SU01 or SU10).\n- Technically possible: Transport user-role assignment via PFCG, but not recommended.\n- Alternative: Download users/roles with SU10 in DEV and upload in QA.\n\n👉 Best Practice in Projects:\n- Always transport roles with TR.\n- Create users separately in each system.\n- Assign roles to users manually in QA/PRD instead of transporting."
+                },
+
+                {
+                    "q": "✅ 1. How to find the Master Role name of a Derived Role?",
+                    "a": "👉 Go to transaction PFCG and open the Derived Role.\n👉 In the Role Maintenance screen, you will see a field called 'Derived from Role'.\n👉 The value shown here is the Master Role name.\n👉 Alternatively, in table AGR_DEFINE, the column 'AGR_NAME' stores the Derived Role and 'PARENT_AGR' stores the Master Role."
+                },
+                {
+                    "q": "✅ 2. How to find the number of Derived Roles for a Master Role?",
+                    "a": "👉 Go to table AGR_DEFINE.\n👉 Enter the Master Role name in field PARENT_AGR.\n👉 Execute, and the system will display all Derived Roles linked to that Master Role.\n👉 The count of entries = Number of Derived Roles."
+                },
+                {
+                    "q": "✅ 3. What is AGR_DEFINE table used for?",
+                    "a": "👉 AGR_DEFINE stores all role definitions.\n👉 It also stores the link between Master and Derived Roles.\n👉 Important fields: AGR_NAME (Role Name) and PARENT_AGR (Master Role)."
+                },
+                {
+                    "q": "✅ 4. What is AGR_AGRS table used for?",
+                    "a": "👉 AGR_AGRS stores information about Single and Composite Roles.\n👉 It helps us identify which Single Roles are inside a Composite Role."
+                },
+                {
+                    "q": "✅ 5. What is AGR_TCOD​ES table used for?",
+                    "a": "👉 AGR_TCOD​ES shows the list of Transactions (Tcodes) assigned to a Role.\n👉 Fields: AGR_NAME (Role), TCODE (Transaction Code)."
+                },
+                {
+                    "q": "✅ 6. What is AGR_USERS table used for?",
+                    "a": "👉 AGR_USERS shows which Users are assigned to a Role.\n👉 Fields: AGR_NAME (Role), UNAME (User ID)."
+                },
+                {
+                    "q": "✅ 7. What is AGR_1251 table used for?",
+                    "a": "👉 AGR_1251 stores the Authorizations and Authorization values of a Role.\n👉 It helps to analyze which authorization objects and values are included in a Role."
+                },
+                {
+                    "q": "✅ 8. What is AGR_1252 table used for?",
+                    "a": "👉 AGR_1252 stores the Organizational Level values of a Role.\n👉 Example: Company Code, Plant, Sales Org values maintained in the Role."
+                },
+
+                {
+                    "q": "✅ What is SU10 in SAP Security?",
+                    "a": "👉 SU10 is used for Mass User Maintenance.\n👉 It allows you to make changes to multiple users at the same time instead of one by one in SU01.\n👉 Example: Assigning roles, locking/unlocking, setting validity dates, or changing parameters for many users together."
+                },
+                {
+                    "q": "✅ What activities can be performed using SU10?",
+                    "a": "👉 With SU10, you can:\n- Assign or remove roles for multiple users.\n- Lock or unlock users.\n- Set or change validity dates.\n- Assign parameters to users.\n- Maintain user groups and profiles.\n👉 It saves time compared to maintaining users one by one in SU01."
+                },
+                {
+                    "q": "✅ Scenario: You need to assign one role to 100 users. How will you do it?",
+                    "a": "👉 Use SU10 (Mass User Maintenance).\n1. Enter the list of users in SU10.\n2. Choose 'Roles' tab.\n3. Add the role you want to assign.\n4. Save → The role is assigned to all selected users.\n👉 This avoids manually going into SU01 for each user."
+                },
+                {
+                    "q": "✅ What is the difference between SU01 and SU10?",
+                    "a": "👉 SU01 is for maintaining a single user (create, lock, assign roles, etc.).\n👉 SU10 is for mass user maintenance (same changes applied to multiple users at once).\n👉 In short: SU01 = single user, SU10 = multiple users."
+                },
+
+
+
+
+
+                {
                     "q": "✅ 1. In a Derived Role, can we directly add transactions in the Menu tab?",
                     "a": "👉 No, in a Derived Role we cannot add or delete transactions in the Menu tab.\n👉 Transactions must be added in the Master Role, and they will automatically appear in the Derived Role."
                 },
