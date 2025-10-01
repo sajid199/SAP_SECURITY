@@ -4,8 +4,14 @@ const questionsData = {
             [
                 {
                     "q": "✅  What is SAP Security and why is it important?",
-                    "a": "SAP Security is a set of rules and controls in the SAP system that protect sensitive business data and processes from unauthorized access. It ensures that only authorized users can access specific applications, data, and functions in SAP.\n👉 It is important because SAP contains critical data like financial information, HR details, and business operations. Without proper security, unauthorized people could misuse this data, leading to data leaks, fraud, or system problems.\n👉 In simple terms, SAP Security is like the lock on your house – only people with the correct key (authorization) can enter and do the right things."
+                    "a": "SAP Security is a set of rules and controls in the SAP system that protect sensitive business data and processes from unauthorized access. It ensures that only authorized users can access specific applications, data, and functions in SAP.\n👉 It is important because SAP contains critical data like financial information, HR details, and business operations. Without proper security, unauthorized people could misuse this data, leading to data leaks, fraud, or system problems.\n👉 In simple terms, SAP Security is like the lock on your house – only people with the correct key (authorization) can enter and do the right things.",
                 },
+                {
+                    "q": "✅  Can you explain the daily-use SAP TCodes along with their related Authorization Objects, Activities, and Fields?",
+                    "a": "This table provides a complete cheat sheet of SAP daily-use TCodes across Security and functional modules (FI, MM, SD, HR, Basis). \n👉 It shows each TCode, its related Authorization Objects, the allowed Activity codes (e.g., 01=Create, 02=Change, 03=Display), and key Fields. \n👉 The table also includes easy-to-remember tips for each module, helping you quickly recall which TCodes to use and how the authorization works.",
+                    "aImg": "./asset/auth_obj_tcodes.png"
+                },
+
 
                 {
                     "q": "✅ What are the Return Codes (RC) in ST01 System Trace in SAP Security?",

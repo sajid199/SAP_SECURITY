@@ -190,6 +190,73 @@
             }
         }
 
+        .question-image {
+            max-width: 100%;
+            height: auto;
+            margin: 15px 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .question-image:hover {
+            transform: scale(1.02);
+        }
+
+        .answer-image {
+            max-width: 100%;
+            height: auto;
+            margin: 15px 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .answer-image:hover {
+            transform: scale(1.02);
+        }
+
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .image-modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: #ff4444;
+        }
+
         .toggle-answer {
             background: #27ae60;
             color: white;
@@ -417,10 +484,14 @@
         </div>
     </div>
 
+    <!-- Image Modal -->
+    <div id="imageModal" class="image-modal" onclick="closeImageModal()">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
     <script src="questionsData.js"></script>
     <script>
-        // Questions data is now loaded from external questionsData.js file
-
         let currentQuestions = [];
         let originalQuestions = [];
 
@@ -435,7 +506,7 @@
 
             let qArr = questionsData[section][level];
             currentQuestions = Array.isArray(qArr[0]) ? qArr[0] : qArr;
-            originalQuestions = [...currentQuestions]; // Keep original copy
+            originalQuestions = [...currentQuestions];
             
             document.getElementById('mainView').style.display = 'none';
             document.getElementById('questionsView').style.display = 'block';
@@ -453,11 +524,27 @@
                 ${currentQuestions.map((item, index) => `
                     <div class="question-item" data-index="${index}">
                         <div class="question">${item.q}</div>
+                        ${item.qImg ? `<img src="${item.qImg}" alt="Question Image" class="question-image" onclick="openImageModal('${item.qImg}')">` : ''}
                         <button class="toggle-answer" onclick="toggleAnswer(${index})">Show Answer</button>
-                        <div class="answer" id="answer-${index}">${item.a.replace(/\n/g, '<br>')}</div>
+                        <div class="answer" id="answer-${index}">
+                            ${item.a.replace(/\n/g, '<br>')}
+                            ${item.aImg ? `<br><img src="${item.aImg}" alt="Answer Image" class="answer-image" onclick="openImageModal('${item.aImg}')">` : ''}
+                        </div>
                     </div>
                 `).join('')}
             `;
+        }
+
+        function openImageModal(imageSrc) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.classList.add('active');
+            modalImg.src = imageSrc;
+        }
+
+        function closeImageModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('active');
         }
 
         function showMainView() {
@@ -513,50 +600,43 @@
             );
         }
 
-        // Enhanced search functionality
         document.getElementById('searchInput').addEventListener('input', function (e) {
             const searchTerm = e.target.value.trim();
 
-            // Only search when questions are visible
             if (document.getElementById('questionsView').classList.contains('active')) {
                 if (searchTerm === '') {
-                    // Reset to show all questions
                     currentQuestions = [...originalQuestions];
                     displayQuestions('Search Results', '');
                     document.getElementById('searchResultsInfo').style.display = 'none';
                     return;
                 }
 
-                // Split search term into individual words
                 const searchWords = searchTerm.split(/\s+/).filter(word => word.length > 0);
-                
                 const matchedQuestions = [];
                 
                 originalQuestions.forEach((item, index) => {
                     const questionText = item.q;
                     const answerText = item.a;
                     
-                    // Check if any search word matches in question or answer
                     const questionMatches = matchesAnyWord(questionText, searchWords);
                     const answerMatches = matchesAnyWord(answerText, searchWords);
                     
                     if (questionMatches || answerMatches) {
-                        // Create highlighted version
                         const highlightedQuestion = highlightMatches(questionText, searchWords);
                         const highlightedAnswer = highlightMatches(answerText, searchWords);
                         
                         matchedQuestions.push({
                             q: highlightedQuestion,
                             a: highlightedAnswer,
+                            qImg: item.qImg,
+                            aImg: item.aImg,
                             originalIndex: index
                         });
                     }
                 });
 
-                // Update current questions and display
                 currentQuestions = matchedQuestions;
                 
-                // Update the display
                 const questionsContent = document.getElementById('questionsContent');
                 const searchResultsInfo = document.getElementById('searchResultsInfo');
                 
@@ -579,28 +659,18 @@
                         ${matchedQuestions.map((item, index) => `
                             <div class="question-item highlight" data-index="${index}">
                                 <div class="question">${item.q}</div>
+                                ${item.qImg ? `<img src="${item.qImg}" alt="Question Image" class="question-image" onclick="openImageModal('${item.qImg}')">` : ''}
                                 <button class="toggle-answer" onclick="toggleAnswer(${index})">Show Answer</button>
-                                <div class="answer" id="answer-${index}">${item.a.replace(/\n/g, '<br>')}</div>
+                                <div class="answer" id="answer-${index}">
+                                    ${item.a.replace(/\n/g, '<br>')}
+                                    ${item.aImg ? `<br><img src="${item.aImg}" alt="Answer Image" class="answer-image" onclick="openImageModal('${item.aImg}')">` : ''}
+                                </div>
                             </div>
                         `).join('')}
                     `;
                 }
             }
         });
-
-        // Reset search when returning to main view
-        function showMainView() {
-            document.getElementById('searchInput').value = '';
-            document.getElementById('searchResultsInfo').style.display = 'none';
-            document.getElementById('questionsView').classList.remove('active');
-            document.getElementById('screensView').classList.remove('active');
-            document.getElementById('mainView').style.display = 'block';
-
-            setTimeout(() => {
-                document.getElementById('questionsView').style.display = 'none';
-                document.getElementById('screensView').style.display = 'none';
-            }, 300);
-        }
     </script>
 </body>
 
